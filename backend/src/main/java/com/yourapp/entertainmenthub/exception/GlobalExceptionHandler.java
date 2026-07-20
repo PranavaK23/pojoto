@@ -13,6 +13,8 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), req, List.of());
@@ -20,9 +22,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExternalApiException.class)
     public ResponseEntity<ApiError> handleExternalApi(ExternalApiException ex, HttpServletRequest req) {
+        logger.error("External API failed: provider={}", ex.getProvider(), ex);
         // Upstream provider failed — surface as 502, never leak raw provider error bodies
         return build(HttpStatus.BAD_GATEWAY,
-                "Upstream service (" + ex.getProvider() + ") is currently unavailable",
+                "Upstream service (" + ex.getProvider() + ") is currently unavailable: " + ex.getMessage(),
                 req, List.of());
     }
 
@@ -36,7 +39,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest req) {
-        return build(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", req, List.of());
+        logger.error("Unhandled exception occurred: ", ex);
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred: " + ex.getMessage(), req, List.of());
     }
 
     private ResponseEntity<ApiError> build(HttpStatus status, String message, HttpServletRequest req, List<String> details) {
