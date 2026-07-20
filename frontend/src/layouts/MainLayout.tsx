@@ -9,7 +9,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             <img 
               src="/logo.png" 
               alt="Pojoto Logo" 
-              className="object-contain" 
+              className="h-[44px] w-auto block"
               style={{ height: '44px', width: 'auto', maxHeight: 'none', minHeight: '44px' }} 
             />
           </a>
