@@ -10,7 +10,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               src="/logo.png" 
               alt="Pojoto Logo" 
               className="object-contain" 
-              style={{ height: '44px', width: 'auto' }} 
+              style={{ height: '44px', width: 'auto', maxHeight: 'none', minHeight: '44px' }} 
             />
           </a>
         </div>
