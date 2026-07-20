@@ -11,8 +11,10 @@ import org.springframework.security.web.SecurityFilterChain;
  * without restructuring this class. See docs/ARCHITECTURE.md.
  */
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
