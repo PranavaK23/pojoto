@@ -6,7 +6,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-10 border-b border-white/10 bg-surface/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <span className="text-lg font-semibold tracking-tight">
-            Entertainment<span className="text-indigo-400">Hub</span>
+            Pojoto
           </span>
         </div>
       </header>
