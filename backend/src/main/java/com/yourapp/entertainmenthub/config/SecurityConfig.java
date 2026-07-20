@@ -10,12 +10,15 @@ import org.springframework.security.web.SecurityFilterChain;
  * The filter chain is structured so a JwtAuthFilter can be inserted later
  * without restructuring this class. See docs/ARCHITECTURE.md.
  */
+import org.springframework.security.config.Customizer;
+
 @Configuration
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
