@@ -33,6 +33,7 @@ public class RawgClientImpl implements RawgClient {
                             .build())
                     .retrieve()
                     .bodyToMono(RawgSearchResponse.class)
+                    .timeout(java.time.Duration.ofSeconds(3))
                     .block();
         } catch (WebClientResponseException ex) {
             throw new ExternalApiException("RAWG", "RAWG search failed", ex);
@@ -51,6 +52,7 @@ public class RawgClientImpl implements RawgClient {
                             .build())
                     .retrieve()
                     .bodyToMono(RawgSearchResponse.class)
+                    .timeout(java.time.Duration.ofSeconds(3))
                     .block();
         } catch (WebClientResponseException ex) {
             throw new ExternalApiException("RAWG", "RAWG popular fetch failed", ex);

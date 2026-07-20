@@ -66,6 +66,7 @@ public class TmdbClientImpl implements TmdbClient {
                     .uri(uriBuilder -> uriFn.apply(uriBuilder.path(path)))
                     .retrieve()
                     .bodyToMono(responseType)
+                    .timeout(java.time.Duration.ofSeconds(3))
                     .block();
         } catch (WebClientResponseException ex) {
             throw new ExternalApiException("TMDb", "TMDb call failed: " + path, ex);
