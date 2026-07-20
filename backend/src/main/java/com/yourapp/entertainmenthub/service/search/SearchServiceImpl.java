@@ -30,27 +30,35 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResultDto search(String query, int page) {
-        // Fire both providers concurrently — total latency ~= max(tmdb, rawg), not the sum
-        CompletableFuture<List<MediaItemDto>> mediaFuture = CompletableFuture.supplyAsync(() ->
-                tmdbClient.searchMulti(query, page).results().stream()
-                        .filter(r -> "movie".equals(r.media_type()) || "tv".equals(r.media_type()))
-                        .map(mediaMapper::toDto)
-                        .toList()
-        );
+        // Run sequentially to avoid ForkJoinPool deadlocks on 1-core instances
+        List<MediaItemDto> mediaItems = java.util.Collections.emptyList();
+        try {
+            mediaItems = tmdbClient.searchMulti(query, page).results().stream()
+                    .filter(r -> "movie".equals(r.media_type()) || "tv".equals(r.media_type()))
+                    .map(mediaMapper::toDto)
+                    .toList();
+        } catch (Exception ex) {
+            org.slf4j.LoggerFactory.getLogger(SearchServiceImpl.class).error("TMDB search failed", ex);
+        }
 
-        CompletableFuture<List<GameItemDto>> gamesFuture = CompletableFuture.supplyAsync(() ->
-                rawgClient.search(query, page).results().stream()
-                        .map(gameMapper::toDto)
-                        .toList()
-        );
+        List<GameItemDto> gameItems = java.util.Collections.emptyList();
+        try {
+            gameItems = rawgClient.search(query, page).results().stream()
+                    .map(gameMapper::toDto)
+                    .toList();
+        } catch (Exception ex) {
+            org.slf4j.LoggerFactory.getLogger(SearchServiceImpl.class).error("RAWG search failed", ex);
+        }
 
-        CompletableFuture.allOf(mediaFuture, gamesFuture).join();
+        if (mediaItems.isEmpty() && gameItems.isEmpty()) {
+            throw new RuntimeException("Both TMDB and RAWG API calls failed. Please check your API keys in Render.");
+        }
 
         return new SearchResultDto(
-                mediaFuture.join(),
-                gamesFuture.join(),
+                mediaItems,
+                gameItems,
                 page,
-                1 // total pages — refined once provider-level pagination is normalized
+                1
         );
     }
 }
