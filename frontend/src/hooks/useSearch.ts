@@ -29,8 +29,9 @@ export function useSearch(query: string) {
         if (!cancelled) setState({ data, loading: false, error: null });
       })
       .catch((err) => {
+        const backendMessage = err.response?.data?.message;
         console.error("Search API Error:", err.response?.data || err.message);
-        if (!cancelled) setState({ data: null, loading: false, error: "Something went wrong. Try again." });
+        if (!cancelled) setState({ data: null, loading: false, error: backendMessage || "Something went wrong. Try again." });
       });
 
     return () => {
