@@ -5,12 +5,12 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-10 border-b border-white/10 bg-surface/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="/" className="block">
+          <a href="/" className="block h-[44px] w-auto">
             <img 
               src="/logo.png" 
               alt="Pojoto Logo" 
               className="h-[44px] w-auto block"
-              style={{ height: '44px', width: 'auto', maxHeight: 'none', minHeight: '44px' }} 
+              style={{ height: '44px', width: 'auto', display: 'block', minHeight: '44px' }} 
             />
           </a>
         </div>
