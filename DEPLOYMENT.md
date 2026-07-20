@@ -23,9 +23,7 @@ We will use Render to host the Spring Boot backend and its PostgreSQL database.
 | :--- | :--- |
 | **Name** | `entertainment-hub-backend` (or your choice) |
 | **Root Directory** | `backend` |
-| **Environment** | `Java` |
-| **Build Command** | `mvn clean package -DskipTests` |
-| **Start Command** | `java -jar target/entertainment-hub-0.1.0.jar` |
+| **Environment** | `Docker` |
 
 ### Step 1.3: Configure Environment Variables
 Scroll down to the **Environment Variables** section and click **Add Environment Variable**. Add the following variables:
