@@ -28,7 +28,8 @@ export function useSearch(query: string) {
       .then((data) => {
         if (!cancelled) setState({ data, loading: false, error: null });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("Search API Error:", err.response?.data || err.message);
         if (!cancelled) setState({ data: null, loading: false, error: "Something went wrong. Try again." });
       });
 
