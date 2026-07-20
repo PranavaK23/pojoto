@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: entertainment-hub
+
+  jpa:
+    hibernate:
+      ddl-auto: validate     # Flyway owns schema, Hibernate never auto-generates
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=2000,expireAfterWrite=15m
+
+server:
+  port: 8080
+  error:
+    include-message: always
+
+external-api:
+  tmdb:
+    base-url: https://api.themoviedb.org/3
+    api-key: ${TMDB_API_KEY}
+    image-base-url: https://image.tmdb.org/t/p
+  watchmode:
+    base-url: https://api.watchmode.com/v1
+    api-key: ${WATCHMODE_API_KEY}
+  rawg:
+    base-url: https://api.rawg.io/api
+    api-key: ${RAWG_API_KEY}
+
+logging:
+  level:
+    com.yourapp.entertainmenthub: DEBUG

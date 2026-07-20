@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/entertainment_hub_dev
+    username: postgres
+    password: ${DB_PASSWORD:postgres}
+
+logging:
+  level:
+    org.springframework.web: DEBUG
