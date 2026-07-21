@@ -5,7 +5,7 @@ const baseURL = rawBaseUrl.endsWith("/api/v1") ? rawBaseUrl : `${rawBaseUrl.repl
 
 const axiosClient = axios.create({
   baseURL,
-  timeout: 10000,
+  timeout: 60000,
 });
 
 export default axiosClient;

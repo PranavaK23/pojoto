@@ -29,9 +29,17 @@ export function useSearch(query: string) {
         if (!cancelled) setState({ data, loading: false, error: null });
       })
       .catch((err) => {
-        const backendMessage = err.response?.data?.message;
-        console.error("Search API Error:", err.response?.data || err.message);
-        if (!cancelled) setState({ data: null, loading: false, error: backendMessage || "Something went wrong. Try again." });
+        const isTimeout = err.code === 'ECONNABORTED' || err.message?.includes('timeout');
+        let errorMsg = err.response?.data?.message || "Something went wrong. Try again.";
+        
+        if (isTimeout) {
+          console.error("Search API Error: The backend server took too long to respond. This is likely due to a Cold Start on free Render instances.");
+          errorMsg = "The backend server is waking up. Please try again in 30-60 seconds.";
+        } else {
+          console.error("Search API Error:", err.response?.data || err.message);
+        }
+        
+        if (!cancelled) setState({ data: null, loading: false, error: errorMsg });
       });
 
     return () => {
