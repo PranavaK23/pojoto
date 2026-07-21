@@ -29,8 +29,8 @@ export default function SearchResultsPage() {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`rounded-full px-4 py-1.5 text-sm capitalize transition-colors ${
-                  tab === t ? "bg-indigo-500 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"
+                className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize transition-colors ${
+                  tab === t ? "bg-indigo-500 text-white shadow-sm" : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
               >
                 {t}
@@ -81,7 +81,7 @@ export default function SearchResultsPage() {
               )}
 
               {movies.length === 0 && tvShows.length === 0 && games.length === 0 && (
-                <p className="text-white/50">No results for "{query}".</p>
+                <p className="text-gray-500">No results for "{query}".</p>
               )}
             </div>
           )}
